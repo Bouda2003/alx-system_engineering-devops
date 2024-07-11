@@ -3,11 +3,11 @@
 # Display information about subdomains.
 
 domain_information () {
-    result=$(dig +noall +answer "$2"."$1")
+    result=$(dig +short "$2"."$1")
     if [ -z "$result" ]; then
         echo "No DNS record found for $2.$1"
     else
-        echo "$result" | awk '{print "The subdomain " $1 " is a " $4 " record and points to " $5}'
+        echo "The subdomain $2.$1 is an A record and points to $result"
     fi
 }
 
