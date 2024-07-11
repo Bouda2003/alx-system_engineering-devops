@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# Usage: ./1-world_wide_web <domain> [<subdomain>]
+# Usage: ./0-world_wide_web <domain> [<subdomain>]
 # Display information about subdomains.
 
 # Function to get domain information
 domain_information () {
-    result=$(dig +short "$2"."$1")
+    result=$(dig "$2"."$1" +short)
     if [ -z "$result" ]; then
         echo "No DNS record found for $2.$1"
     else
-        echo "The subdomain $2.$1 is an A record and points to $result"
+        record_type=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tail -n1 | awk '{print $4}')
+        echo "The subdomain $2.$1 is a $record_type record and points to $result"
     fi
 }
 
